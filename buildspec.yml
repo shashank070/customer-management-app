@@ -1,0 +1,27 @@
+version: 0.2
+
+env:
+  variables:
+    JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
+    VERSION: "1.0" 
+    IMAGE_TAG: "latest" 
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+    commands:
+      - echo Entered the install phase...
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+  build: 
+    commands:
+      - echo Build started on `date`
+      - mvn package
+      - cd target
+      - aws s3 cp customer-management-app-1.0-exec.jar s3://crm-app-code/ 
+      - echo loaded new war
+  post_build:
+    commands:
+      - echo Build completed on `date`
+
